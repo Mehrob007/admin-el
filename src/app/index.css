@@ -1,0 +1,103 @@
+@font-face {
+  font-family: 'AGAvantGardeCyr';
+  src: url('./../assets/fonts/agavantgardecyr-book.woff2') format('woff2'),
+       url('./../assets/fonts/agavantgardecyr-book.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'font-book';
+  src: url('./../assets/fonts/ALS_Granate_Book_0.9.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  font-family: 'AGAvantGardeCyr';
+  vertical-align: baseline;
+}
+  
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+  
+body {
+  line-height: 1;
+}
+  
+ol, ul {
+  list-style: none;
+}
+  
+blockquote, q {
+  quotes: none;
+}
+  
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+  
+button:active{
+  filter: brightness(90%);
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+.input__component{
+  max-width: 446px;
+  width: 100%;
+  max-height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  gap: 10px;
+  position: relative;
+}
+.input__component > label{
+  height: 15px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 15.4px;
+  text-align: left;
+  text-decoration-skip-ink: none;
+}
+.input__component > input{
+  padding: 0 10px;
+  outline: none;
+  height: 45px;
+  width: 95%;
+  border: 1px solid #262626;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17.36px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+}
+.input__component > p{
+  position: absolute;
+  font-size: 13px;
+  color: red;
+  bottom: 0;
+}

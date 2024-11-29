@@ -1,0 +1,188 @@
+main{
+    max-width: 1440px;
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 440px 1fr;
+}
+.box__outlet{
+    overflow-y: auto;
+}
+.header__login{
+    width: 100%;
+    height: 70px;
+    margin: 0 auto;
+    background-color: #408759;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.header__login > div{
+    max-width: 1340px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 50px;
+}
+.header__login > div > div{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 15px;
+}
+.header__login > div > div > span{
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22.32px;
+    text-align: left;
+    text-underline-position: from-font;
+    font-family: "Unbounded", sans-serif !important;
+    color: white;
+}
+.header__login > img{
+    background-color: transparent;
+}
+.body__login{
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box__login{
+    max-width: 445px;
+    width: 100%;
+    height: 318px;
+}
+.div__login{
+    display: grid;
+    gap: 44px;
+}
+.inputs__login{
+    display: grid;
+    gap: 22px;
+}
+.title__login{
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 27.16px;
+    text-align: center;
+    text-underline-position: from-font;
+    margin-bottom: 40px;
+}
+.button__component{
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: center;
+    text-underline-position: from-font;
+    width: 100%;
+    height: 45px;
+    border: none;
+    background-color: #408759;
+    color: white;
+    cursor: pointer;
+}
+.left__menu{
+    width: 440px;
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.nav__laft__menu{
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    padding-left: 50px;
+    margin-top: 40px;
+}
+.nav__laft__menu > div > a{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-decoration: none;
+    gap: 15px;
+    color: #909090;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: "Unbounded", sans-serif !important;
+    line-height: 27.28px;
+    text-align: left;
+    text-underline-position: from-font;
+
+}
+.nav__laft__menu > div > a > img{
+    filter: hue-rotate(140deg) saturate(100%) brightness(100%);
+}
+.nav__laft__menu > div > a > span{
+    font-family: "Unbounded", sans-serif !important;
+}
+.nav__laft__menu > div > div{
+    margin-left: 55px;
+}
+.nav__laft__menu > div > div > a{
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    text-decoration: none;
+    color: #909090;
+    font-size: 22px;
+    font-weight: 400;
+    font-family: "Unbounded", sans-serif !important;
+    line-height: 27.28px;
+    text-align: left;
+}
+.nav__laft__menu > div > div > a > span{
+    font-family: "Unbounded", sans-serif !important;
+}
+.exit__button__left__menu{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+.exit__button__left__menu > button{
+    font-size: 18px;
+    font-weight: 400;
+    font-family: "Unbounded", sans-serif !important;
+    line-height: 22.32px;
+    text-align: center;
+    background-color: transparent;
+    border: none;
+    color: #909090;
+    cursor: pointer;
+}
+.active_link{
+    color: #408759 !important;
+}
+.com__box{
+    padding: 30px 65px;
+}
+.bottom__com{
+    display: flex;
+    /* width: 500px; */
+    gap: 10px;
+}
+.bottom__com > input{
+    width: 370px;
+}
+.bottom__com > button{
+    width: 145px;
+    height: 45px;
+    background-color: #408759;
+    font-family: Unbounded;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 15.4px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: white;
+    cursor: pointer;
+}
