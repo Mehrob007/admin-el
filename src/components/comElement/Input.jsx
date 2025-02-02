@@ -6,12 +6,15 @@ export default function Input({
     onChange = () => {},
     value = "",
     error = false,
-    labelError = ""
+    labelError = "",
+    className,
+    styleInput,
+    classNameDiv
 }) {
     return (
-        <div style={style} className="input__component">
+        <div style={style} className={`input__component ${classNameDiv}`}>
             {label.length > 0 && <label htmlFor={id}>{label}</label>}
-            <input id={id || ""} type={typeHtml} onChange={onChange} value={value} />
+            <input id={id || ""} style={styleInput} className={className} type={typeHtml} onChange={onChange} value={value} />
             {error && <p>{labelError}</p>}
         </div>
     )

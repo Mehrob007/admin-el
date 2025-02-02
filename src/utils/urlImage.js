@@ -1,0 +1,1 @@
+export const getImageSrc = (imageName) => `https://backendeleven.ru/images/${imageName}`

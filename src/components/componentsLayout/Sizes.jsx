@@ -2,14 +2,16 @@ import { useEffect, useState } from "react";
 import Input from "../comElement/Input";
 import apiClient from "../../utils/apiClient";
 
-export default function Collections() {
+export default function Sizes() {
   const [data, setData] = useState([]);
   const [Collection, setCollection] = useState({
     name: "",
   });
+
   const onSendcollection = async () => {
+    console.log(Collection);
     try {
-      const res = await apiClient.post("/collections", Collection);
+      const res = await apiClient.post("/sizes", Collection);
       console.log(res);
       getCollections();
       setCollection({});
@@ -19,19 +21,20 @@ export default function Collections() {
   };
   const getCollections = async () => {
     try {
-      const res = await apiClient.get("collections/admins");
-      setData(res.data.data.collections);
+      const res = await apiClient.get("/sizes");
+      setData(res.data.data.sizes);
     } catch (e) {
       console.error(e);
       setData([]);
     }
   };
+
   const onDelete = async (id) => {
     try {
-      const res = await apiClient.delete("/collections", {
+      const res = await apiClient.delete("/sizes", {
         data: {
           id: id,
-          forceDeleted: true,
+          // forceDeleted: true,
         },
       });
       console.log(res);
@@ -49,8 +52,8 @@ export default function Collections() {
     <div>
       <div className="com__box">
         <div className="top__com">
-          <h1>Коллекции</h1>
-          <p>Добавьте новую коллекцию</p>
+          <h1>Размеры</h1>
+          <p>Добавьте новый размер</p>
         </div>
         <div className="bottom__com">
           <Input
@@ -64,13 +67,12 @@ export default function Collections() {
       </div>
       <div className="com__box">
         <div className="top__com">
-          <h1>Активные коллекции</h1>
+          <h1>Активные размеры</h1>
         </div>
         <div className="bottom__com com__category">
-          {data.map((el) => (
+          {data?.map((el) => (
             <div key={el.id} className="com__item__category">
               <span>{el.name}</span>
-
               <button onClick={() => onDelete(el.id)}>x</button>
             </div>
           ))}

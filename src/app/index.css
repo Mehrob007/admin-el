@@ -56,6 +56,9 @@ q:before, q:after {
   content: '';
   content: none;
 }
+button{
+  border: none;
+}
   
 button:active{
   filter: brightness(90%);
@@ -85,7 +88,7 @@ table {
 .input__component > input{
   padding: 0 10px;
   outline: none;
-  height: 45px;
+  height: 43px;
   width: 95%;
   border: 1px solid #262626;
   font-size: 14px;
@@ -94,10 +97,28 @@ table {
   text-align: left;
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
+  /* position: relative; */
 }
 .input__component > p{
   position: absolute;
   font-size: 13px;
   color: red;
-  bottom: 0;
+  bottom: -14px;
+}
+.input__number__procent::after{
+  content: "%";
+  position: absolute;
+  top: 13px;
+  right: -9px;
+  font-family: Unbounded;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17.36px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  background-color: white;
+  /* color: red; */
+  width: 20px;
+  height: 20px;
 }
