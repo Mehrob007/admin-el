@@ -46,5 +46,5 @@ export default function RefreshToken() {
     }
   }, []);
 
-  return <div>Твой refreshToken: {decodedToken}</div>;
+  return <div></div>;
 }

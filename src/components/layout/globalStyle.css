@@ -220,6 +220,7 @@ main {
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   background-color: white;
+  outline: none;
 }
 .select__com > option {
   font-family: Unbounded;
@@ -842,8 +843,10 @@ main {
   margin: 10px 0;
 }
 .gallery__parsing > img {
-  min-width: 130px;
+  min-width: 100px;
   min-height: 100px;
+  max-width: 130px;
+  max-height: 130px;
 }
 .active__gallery > button {
   cursor: pointer;
@@ -871,6 +874,12 @@ main {
   width: 500px;
   border-bottom: 2px solid #262626;
   height: 30px;
+  display: flex;
+  gap: 2px;
+}
+.menu__color__products > div > span{
+  border: 2px solid transparent;
+  border-radius: 5px ;
 }
 .menu__color__products > button{
   height: 30px;
@@ -895,10 +904,64 @@ main {
   width: 200px;
   background-color: white;
   gap: 10px;
-  padding: 20px;
+  padding: 20px 30px;
+  padding-top: 10px;
+  position: relative;
 }
 .modalAddColor > main > input{
   outline: none;
   height: 30px;
-  padding-left: 0px;
+  padding-left: 5px;
+  font-size: 16px;
+  font-family: Unbounded;
+  font-weight: 400;
+  line-height: 27.28px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #408759;
+  border: none;
+  border-bottom: 2px solid #262626;
+}
+.modalAddColor > main > div{
+  display: flex;
+  justify-content: space-between;
+}
+.modalAddColor > main > div > button{
+  padding: 3px 7px;
+  width: 95px;
+  cursor: pointer;
+  font-family: Unbounded;
+  font-weight: 400;
+  line-height: 27.28px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #408759;
+}
+.modalAddColor > main > div > button:hover{
+  background-color: #408759;
+  color: #fff;
+}
+.modalAddColor > main > button{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+.modalAddColor > main > button:hover{
+  background-color: #ff0000;
+  color: white;
+}
+.modalAddColor > main > h1{
+  cursor: pointer;
+  font-family: Unbounded;
+  font-weight: 400;
+  line-height: 27.28px;
+  text-align: center;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
+  color: #408759;
 }

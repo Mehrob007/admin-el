@@ -127,6 +127,7 @@ export default function Home() {
                 },
               });
               setTimeout(getNewCollection(), 1000);
+              setTimeout(setNewCollection(""), 100);
             }}
           >
             Сохранить

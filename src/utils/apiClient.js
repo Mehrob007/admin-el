@@ -68,6 +68,7 @@ apiClient.interceptors.response.use(
       } catch (err) {
         processQueue(err, null);
         // document.location.href = "http://localhost:5174";
+        alert("Token просрочен!")
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

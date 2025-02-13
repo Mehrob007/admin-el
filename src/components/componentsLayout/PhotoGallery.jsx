@@ -3,10 +3,11 @@ import apiClient from "../../utils/apiClient";
 import Trash from "../../assets/icon/Trash.svg";
 import backProductsIcon from "../../assets/icon/backProductsIcon.svg";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 // import getImageSrс from "../../utils/urlImage"
 
 const getImageSrc = (imageName) =>
-  `https://backendeleven.ru/images/${imageName}`;
+  `http://45.15.158.130:5238/gallery?gallery=${imageName}`;
 
 export default function PhotoGallery() {
   const [dataCollections, setDataCollections] = useState([]);
@@ -14,27 +15,31 @@ export default function PhotoGallery() {
   const [formG, setFormG] = useState(false);
   const [fetching, setFetching] = useState(true);
   const [image, setImage] = useState([]);
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(0);
   const [edit, setEdit] = useState(false);
+  const [loading, setLoadingt] = useState(false);
   const [dataSend, setDataSend] = useState({
-    nameCollection: "",
-    photos: [],
+    name: "",
+    images: [],
   });
   const navigate = useNavigate();
   console.log("dataSend", dataSend);
   const addPhotoGallery = async () => {
+    setLoadingt(true);
     if (!edit) {
       try {
-        await apiClient.post("/CollectionGallery/create-collection", dataSend);
+        await apiClient.post("galleries", dataSend);
         navigate(0);
+        setLoadingt(false);
       } catch (e) {
         console.error(e);
       }
     } else {
       try {
-        await apiClient.put("/CollectionGallery/update-collection", dataSend);
+        await apiClient.put("galleries", dataSend);
         navigate(0);
         setEdit(false);
+        setLoadingt(false);
       } catch (e) {
         console.error(e);
       }
@@ -43,52 +48,65 @@ export default function PhotoGallery() {
 
   const getCollections = async () => {
     try {
-      const res = await apiClient.get("/collections");
-      setDataCollections(res.data);
+      const res = await apiClient.get("/categories?page=0&limit=100");
+      setDataCollections(res.data.data.categories);
     } catch (e) {
       console.error(e);
     }
   };
   const handleFileChange = async (event) => {
-    const files = event.target.files;
+    const files = event.target.files[0];
     if (!files) return;
 
-    const base64Images = [];
-    for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      if (file.size > 5 * 1024 * 1024) {
-        alert("Размер файла не может превышать 5мб.");
-        continue;
-      }
+    // const base64Images = [];
+    // for (let i = 0; i < files.length; i++) {
+    //   const file = files[i];
+    //   if (file.size > 5 * 1024 * 1024) {
+    //     alert("Размер файла не может превышать 5мб.");
+    //     continue;
+    //   }
 
-      const base64 = await convertToBase64(file);
-      base64Images.push(base64);
-    }
+    //   const base64 = await convertToBase64(file);
+    //   base64Images.push(base64);
+    // }
+
+    console.log("file", files);
+
+    const formData = new FormData();
+    formData.append("file", files);
+
+    const res = await axios.post(
+      "http://45.15.158.130:5238/gallery/upload",
+      formData,
+    );
 
     setDataSend((prevState) => ({
       ...prevState,
-      photos: [...prevState.photos, ...base64Images],
+      images: [...prevState.images, { source: res.data.source }],
     }));
   };
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
-  };
+  // const convertToBase64 = (file) => {
+  //   return new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsDataURL(file);
+  //     reader.onload = () => resolve(reader.result);
+  //     reader.onerror = (error) => reject(error);
+  //   });
+  // };
   const removeImage = (index) => {
     setDataSend((prevState) => ({
       ...prevState,
-      photos: prevState?.photos?.filter((_, i) => i !== index),
+      images: prevState?.images?.filter((_, i) => i !== index),
     }));
   };
   const deleteGallery = async (id) => {
     try {
-      await apiClient.delete(
-        `/CollectionGallery/delete-collection-gallery?collectionId=${id}`,
-      );
+      await apiClient.delete(`/galleries`, {
+        data: {
+          id: id,
+          forceDeleted: true,
+        },
+      });
       navigate(0);
     } catch (e) {
       console.error(e);
@@ -96,12 +114,10 @@ export default function PhotoGallery() {
   };
   const getGallery = async () => {
     try {
-      const res = await apiClient.get(
-        `/CollectionGallery/get-gallery-collection?limit=${50}&page=${page}`,
-      );
-      const newData = res?.data?.galleries[0]?.map((el) => ({
+      const res = await apiClient.get(`/galleries/admin?limit=${24}&page${page}`);
+      const newData = res?.data?.data?.map((el) => ({
         ...el,
-        photos: el?.photos?.map((prev) => getImageSrc(prev)),
+        images: el?.images?.map((prev) => getImageSrc(prev.source)),
       }));
 
       setImage([...image, ...newData]);
@@ -137,6 +153,10 @@ export default function PhotoGallery() {
       getGallery();
     }
   }, [fetching]);
+
+  console.log("====================================");
+  console.log("dataSend", dataSend);
+  console.log("====================================");
   return (
     <div>
       <div className="com__box">
@@ -160,7 +180,14 @@ export default function PhotoGallery() {
           {!formG ? (
             <button onClick={() => setFormG(true)}>Добавить альбом</button>
           ) : (
-            <button onClick={addPhotoGallery}>Сохранить альбом</button>
+            <button
+            style={{ background: loading && "#D9D9D9" }}
+              onClick={() => {
+                if (!loading) addPhotoGallery();
+              }}
+            >
+              Сохранить альбом
+            </button>
           )}
         </div>
       </div>
@@ -170,9 +197,9 @@ export default function PhotoGallery() {
             {image.length
               ? image?.map((el, i) => (
                   <div key={i}>
-                    <h1>{el?.nameCollection}</h1>
+                    <h1>{el?.name}</h1>
                     <div className="gallery__parsing">
-                      {el?.photos?.map((prev, i) => (
+                      {el?.images?.map((prev, i) => (
                         <img src={prev} key={i} alt="image-gallery" />
                       ))}
                     </div>
@@ -204,15 +231,15 @@ export default function PhotoGallery() {
                 onChange={(el) => {
                   setDataSend({
                     ...dataSend,
-                    nameCollection: el.target.value,
+                    name: el.target.value,
                   });
                 }}
-                value={dataSend?.nameCollection}
+                value={dataSend?.name}
               >
                 <option value="">Коллекция</option>
                 {dataCollections?.map((el) => (
-                  <option key={el.id} value={el.collectionName}>
-                    {el.collectionName}
+                  <option key={el.id} value={el.name}>
+                    {el.name}
                   </option>
                 ))}
               </select>
@@ -236,14 +263,14 @@ export default function PhotoGallery() {
               multiple
               onChange={handleFileChange}
             />{" "}
-            {!dataSend?.photos && (
+            {!dataSend?.images && (
               <p className="error">Поле обязательно для заполнения.</p>
             )}
             <div
               className="arr__img__rodect"
               style={{ marginTop: "20px", minHeight: "200px" }}
             >
-              {dataSend?.photos?.map((el, i) => (
+              {dataSend?.images?.map((el, i) => (
                 <div key={i}>
                   <img src={el} alt="imgProduct" />
                   <span>
