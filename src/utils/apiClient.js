@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://45.15.158.130:5248/api/",
+  baseURL: import.meta.env.VITE_ENV_URL,
 });
 
 let isRefreshing = false;
@@ -47,7 +47,7 @@ apiClient.interceptors.response.use(
         const refreshToken = localStorage.getItem("refreshToken");
 
         const response = await axios.post(
-          "http://45.15.158.130:5248/api/auth/refresh",
+          import.meta.env.VITE_ENV_URL + "auth/refresh",
           {
             refreshToken: refreshToken,
           },
@@ -67,8 +67,8 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (err) {
         processQueue(err, null);
-        // document.location.href = "http://localhost:5174";
-        alert("Token просрочен!")
+        document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
+        // alert("Token просрочен!");
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

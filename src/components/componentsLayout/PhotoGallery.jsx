@@ -7,7 +7,7 @@ import axios from "axios";
 // import getImageSrс from "../../utils/urlImage"
 
 const getImageSrc = (imageName) =>
-  `http://45.15.158.130:5238/gallery?gallery=${imageName}`;
+  import.meta.env.VITE_ENV_URL_FILE + `gallery?gallery=${imageName}`;
 
 export default function PhotoGallery() {
   const [dataCollections, setDataCollections] = useState([]);
@@ -76,7 +76,7 @@ export default function PhotoGallery() {
     formData.append("file", files);
 
     const res = await axios.post(
-      "http://45.15.158.130:5238/gallery/upload",
+      import.meta.env.VITE_ENV_URL_FILE + "gallery/upload",
       formData,
     );
 
@@ -114,7 +114,9 @@ export default function PhotoGallery() {
   };
   const getGallery = async () => {
     try {
-      const res = await apiClient.get(`/galleries/admin?limit=${24}&page${page}`);
+      const res = await apiClient.get(
+        `/galleries/admin?limit=${24}&page${page}`,
+      );
       const newData = res?.data?.data?.map((el) => ({
         ...el,
         images: el?.images?.map((prev) => getImageSrc(prev.source)),
@@ -181,7 +183,7 @@ export default function PhotoGallery() {
             <button onClick={() => setFormG(true)}>Добавить альбом</button>
           ) : (
             <button
-            style={{ background: loading && "#D9D9D9" }}
+              style={{ background: loading && "#D9D9D9" }}
               onClick={() => {
                 if (!loading) addPhotoGallery();
               }}

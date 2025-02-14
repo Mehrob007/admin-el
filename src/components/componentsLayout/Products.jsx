@@ -111,17 +111,18 @@ export default function Products() {
       // setLangthProduct(res.data.totalItems || 0);
       // setPageProduct(res.data.totalPages || 0);
 
-      const uniqueProducts = products.filter(
-        (newProduct) =>
-          !dataProducts.some(
-            (existingProduct) => existingProduct.cost === newProduct.cost,
-          ),
-      );
+      // const uniqueProducts = products.filter(
+      //   (newProduct) =>
+      //     !dataProducts.some(
+      //       (existingProduct) => existingProduct.cost === newProduct.cost,
+      //     ),
+      // );
       setDataProducts(
-        uniqueProducts?.map((el) => ({
-          ...el,
-          // images: el?.images?.map((prev) => getImageSrc(prev)),
-        })),
+        // uniqueProducts?.map((el) => ({
+        //   ...el,
+        //   // images: el?.images?.map((prev) => getImageSrc(prev)),
+        // })),
+        [...dataProducts, ...products],
       );
       setFetching(false);
     } catch (e) {
@@ -167,7 +168,7 @@ export default function Products() {
     formData.append("file", files);
 
     const res = await axios.post(
-      "http://45.15.158.130:5238/photos/upload",
+      import.meta.env.VITE_ENV_URL_FILE + "photos/upload",
       formData,
     );
 
@@ -193,7 +194,7 @@ export default function Products() {
   const removeImage = async (src, color) => {
     try {
       const res = await axios.delete(
-        "http://45.15.158.130:5238/photos/remove",
+        import.meta.env.VITE_ENV_URL_FILE + "photos/remove",
         {
           data: {
             source: src,
@@ -523,7 +524,10 @@ export default function Products() {
                       <span>{el?.id}</span>
                     </div>
                     <img
-                      src={`http://45.15.158.130:5238/photos?photo=${el?.images?.[0]?.source}`}
+                      src={
+                        import.meta.env.VITE_ENV_URL_FILE +
+                        `photos?photo=${el?.images?.[0]?.source}`
+                      }
                       alt="imgProduct"
                     />
                     <div>
@@ -1083,7 +1087,10 @@ export default function Products() {
                         {formState?.images?.map((el, i) => (
                           <div key={i}>
                             <img
-                              src={`http://45.15.158.130:5238/photos?photo=${el?.source}`}
+                              src={
+                                import.meta.env.VITE_ENV_URL_FILE +
+                                `photos?photo=${el?.source}`
+                              }
                               alt="imgProduct"
                             />
                             <span>

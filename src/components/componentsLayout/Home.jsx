@@ -143,8 +143,8 @@ export default function Home() {
           {/* <ImageUploader handleFileChange={handleFileChange} /> */}
           <VideoUploader
             GetBunner={GetBunner}
-            getUrl={`http://45.15.158.130:5238/banner/window`}
-            postUrl={"http://45.15.158.130:5238/banner/window"}
+            getUrl={import.meta.env.VITE_ENV_URL_FILE + `banner/window`}
+            postUrl={import.meta.env.VITE_ENV_URL_FILE + "banner/window"}
             handleFileChange={handleFileChange}
             // urlDeleteCom={`/Banner/delete-banner`}
           />
@@ -158,8 +158,8 @@ export default function Home() {
         <div className="bottom__com">
           <VideoUploader
             GetBunner={GetBunner}
-            getUrl={`http://45.15.158.130:5238/banner/mobile`}
-            postUrl={"http://45.15.158.130:5238/banner/mobile"}
+            getUrl={import.meta.env.VITE_ENV_URL_FILE + `banner/mobile`}
+            postUrl={import.meta.env.VITE_ENV_URL_FILE + "banner/mobile"}
             handleFileChange={handleFileChange}
             // urlDeleteCom={`/Banner/delete-banner-mobile`}
           />
