@@ -150,8 +150,7 @@ export default function Products() {
 
   const handleFileChange = async (event, color) => {
     const files = event.target.files[0];
-    if (!files) return;
-
+    // if (!files) return;
     // const base64Images = [];
     // for (let i = 0; i < files.length; i++) {
     //   const file = files[i];
@@ -171,6 +170,7 @@ export default function Products() {
       import.meta.env.VITE_ENV_URL_FILE + "photos/upload",
       formData,
     );
+    let imgBace64 = await convertToBase64(files);
 
     // setFormState((prevState) => ({
     //   ...prevState,
@@ -179,38 +179,44 @@ export default function Products() {
     const prevState = allData.find((prev) => prev.color.hex === color);
     onChange(
       "images",
-      [...prevState.images, { source: res.data.source }],
+      [...prevState.images, { source: res.data.source, sourceLoc: imgBace64 }],
       color,
     );
   };
-  // const convertToBase64 = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
   const removeImage = async (src, color) => {
-    try {
-      const res = await axios.delete(
-        import.meta.env.VITE_ENV_URL_FILE + "photos/remove",
-        {
-          data: {
-            source: src,
-          },
-        },
-      );
-      const prevState = await allData.find((prev) => prev.color.hex === color);
-      onChange(
-        "images",
-        prevState.images.filter((e) => e.source !== src),
-        color,
-      );
-      console.log("delete img:", res.data);
-    } catch (e) {
-      console.error(e);
-    }
+    // try {
+    //   const res = await axios.delete(
+    //     import.meta.env.VITE_ENV_URL_FILE + "photos/remove",
+    //     {
+    //       data: {
+    //         source: src,
+    //       },
+    //     },
+    //   );
+    //   const prevState = await allData.find((prev) => prev.color.hex === color);
+    //   onChange(
+    //     "images",
+    //     prevState.images.filter((e) => e.source !== src),
+    //     color,
+    //   );
+    //   console.log("delete img:", res.data);
+    // } catch (e) {
+    //   console.error(e);
+    // }
+    const prevState = await allData.find((prev) => prev.color.hex === color);
+    onChange(
+      "images",
+      prevState.images.filter((e) => e.source !== src),
+      color,
+    );
   };
   const validateForm = () => {
     const newErrors = {};
@@ -408,8 +414,16 @@ export default function Products() {
     // console.log("formStateSend", formState);
     try {
       setLoading(true);
-      await apiClient.post("/products", allData);
-      setTimeout(() => navigate(0), 100);
+      await apiClient.post(
+        "/products",
+        allData.map((e) => ({
+          ...e,
+          images: e?.images.map((prev) => ({
+            source: prev.source,
+          })),
+        })),
+      );
+      // setTimeout(() => navigate(0), 100);
     } catch (e) {
       console.error(e);
     } finally {
@@ -1088,8 +1102,10 @@ export default function Products() {
                           <div key={i}>
                             <img
                               src={
-                                import.meta.env.VITE_ENV_URL_FILE +
-                                `photos?photo=${el?.source}`
+                                el.sourceLoc
+                                  ? el.sourceLoc
+                                  : import.meta.env.VITE_ENV_URL_FILE +
+                                    `photos?photo=${el?.source}`
                               }
                               alt="imgProduct"
                             />

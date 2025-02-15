@@ -79,20 +79,24 @@ export default function PhotoGallery() {
       import.meta.env.VITE_ENV_URL_FILE + "gallery/upload",
       formData,
     );
+    let imgBace64 = await convertToBase64(files);
 
     setDataSend((prevState) => ({
       ...prevState,
-      images: [...prevState.images, { source: res.data.source }],
+      images: [
+        ...prevState.images,
+        { source: res.data.source, sourceLoc: imgBace64 },
+      ],
     }));
   };
-  // const convertToBase64 = (file) => {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.readAsDataURL(file);
-  //     reader.onload = () => resolve(reader.result);
-  //     reader.onerror = (error) => reject(error);
-  //   });
-  // };
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
   const removeImage = (index) => {
     setDataSend((prevState) => ({
       ...prevState,
@@ -119,7 +123,7 @@ export default function PhotoGallery() {
       );
       const newData = res?.data?.data?.map((el) => ({
         ...el,
-        images: el?.images?.map((prev) => getImageSrc(prev.source)),
+        images: el?.images,
       }));
 
       setImage([...image, ...newData]);
@@ -202,7 +206,11 @@ export default function PhotoGallery() {
                     <h1>{el?.name}</h1>
                     <div className="gallery__parsing">
                       {el?.images?.map((prev, i) => (
-                        <img src={prev} key={i} alt="image-gallery" />
+                        <img
+                          src={getImageSrc(prev.source)}
+                          key={i}
+                          alt="image-gallery"
+                        />
                       ))}
                     </div>
                     <div className="active__gallery">
@@ -274,7 +282,10 @@ export default function PhotoGallery() {
             >
               {dataSend?.images?.map((el, i) => (
                 <div key={i}>
-                  <img src={el} alt="imgProduct" />
+                  <img
+                    src={el.sourceLoc ? el.sourceLoc : getImageSrc(el.source)}
+                    alt="imgProduct"
+                  />
                   <span>
                     <button
                       style={{ width: 45 }}
