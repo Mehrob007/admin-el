@@ -1,5 +1,5 @@
 import { Outlet } from 'react-router-dom'
-import LeftMenu from '../navigate/leftMenu'
+import LeftMenu from '../navigate/LeftMenu'
 import iconLogo from '../../assets/icon/iconLogo.svg'
 import ava from '../../assets/icon/ava.svg'
 

@@ -9,6 +9,7 @@ import { size, throttle } from "lodash";
 import { useNavigate } from "react-router-dom";
 import { getImageSrc } from "../../utils/urlImage";
 import axios from "axios";
+import apiClientFiles from "../../utils/apiFileService";
 
 function generateGUID() {
   return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
@@ -166,10 +167,7 @@ export default function Products() {
     const formData = new FormData();
     formData.append("file", files);
 
-    const res = await axios.post(
-      import.meta.env.VITE_ENV_URL_FILE + "photos/upload",
-      formData,
-    );
+    const res = await axios.post(apiClientFiles("photos/upload"), formData);
     let imgBace64 = await convertToBase64(files);
 
     // setFormState((prevState) => ({

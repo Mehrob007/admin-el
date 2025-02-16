@@ -5,11 +5,15 @@ main {
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: 440px 1fr;
+  /* display: grid;
+  grid-template-columns: 440px 1fr; */
+  display: flex;
+  align-items: start;
+  justify-content: center;
 }
 .box__outlet {
   overflow-y: auto;
+  width: 1000px;
 }
 .box__outlet > div {
   height: 100%;

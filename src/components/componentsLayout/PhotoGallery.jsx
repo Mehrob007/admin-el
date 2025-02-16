@@ -4,6 +4,7 @@ import Trash from "../../assets/icon/Trash.svg";
 import backProductsIcon from "../../assets/icon/backProductsIcon.svg";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import apiClientFiles from "../../utils/apiFileService";
 // import getImageSrс from "../../utils/urlImage"
 
 const getImageSrc = (imageName) =>
@@ -75,10 +76,7 @@ export default function PhotoGallery() {
     const formData = new FormData();
     formData.append("file", files);
 
-    const res = await axios.post(
-      import.meta.env.VITE_ENV_URL_FILE + "gallery/upload",
-      formData,
-    );
+    const res = await axios.post(apiClientFiles("gallery/upload"), formData);
     let imgBace64 = await convertToBase64(files);
 
     setDataSend((prevState) => ({
