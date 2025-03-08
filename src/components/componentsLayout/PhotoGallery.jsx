@@ -5,6 +5,8 @@ import backProductsIcon from "../../assets/icon/backProductsIcon.svg";
 import { useNavigate } from "react-router-dom";
 import apiClientFiles from "../../utils/apiFileService";
 // import getImageSrс from "../../utils/urlImage"
+import ImageComponent from "./ImageComponent";
+import loadingPhoto from "../../assets/icon/loadingPhoto.svg";
 
 const getImageSrc = (imageName) =>
   import.meta.env.VITE_ENV_URL_FILE + `gallery?gallery=${imageName}`;
@@ -249,10 +251,16 @@ export default function PhotoGallery() {
                     <h1>{el?.name}</h1>
                     <div className="gallery__parsing">
                       {el?.images?.map((prev, i) => (
-                        <img
-                          src={getImageSrc(prev.source)}
+                        // <img
+                        //   src={getImageSrc(prev.source)}
+                        //   key={i}
+                        //   alt="image-gallery"
+                        // />
+                        <ImageComponent
+                          el={el}
+                          i={i}
+                          loadingPhoto={loadingPhoto}
                           key={i}
-                          alt="image-gallery"
                         />
                       ))}
                     </div>
@@ -330,10 +338,11 @@ export default function PhotoGallery() {
             >
               {dataSend?.images?.map((el, i) => (
                 <div key={i}>
-                  <img
+                  {/* <img
                     src={el.sourceLoc ? el.sourceLoc : getImageSrc(el.source)}
                     alt="imgProduct"
-                  />
+                  /> */}
+                  <ImageComponent el={el} i={i} loadingPhoto={loadingPhoto} />
                   <span>
                     <button
                       style={{ width: 45 }}
