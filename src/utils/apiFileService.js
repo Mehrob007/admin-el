@@ -4,6 +4,7 @@ const apiClientFiles = axios.create({
   baseURL: import.meta.env.VITE_ENV_URL_FILE,
 });
 
+// Глобальные переменные для управления обновлением токена
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -18,9 +19,13 @@ const processQueue = (error, token = null) => {
   failedQueue = [];
 };
 
-apiClientFiles.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${localStorage.getItem("accessToken")}`;
+// Установка токена при инициализации
+const accessToken = localStorage.getItem("accessToken");
+if (accessToken) {
+  apiClientFiles.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${accessToken}`;
+}
 
 apiClientFiles.interceptors.response.use(
   (response) => response,
@@ -43,19 +48,23 @@ apiClientFiles.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Запрашиваем новый accessToken, используя refreshToken
         const refreshToken = localStorage.getItem("refreshToken");
 
+        if (!refreshToken) {
+          throw new Error("Refresh token отсутствует");
+        }
+
         const response = await axios.post(
-          import.meta.env.VITE_ENV_URL + "auth/refresh",
-          {
-            refreshToken: refreshToken,
-          },
+          `${import.meta.env.VITE_ENV_URL}auth/refresh`,
+          { refreshToken },
         );
-        const data = response.data.data;
-        const newAccessToken = data.accessToken;
-        await localStorage.setItem("accessToken", data.accessToken);
-        await localStorage.setItem("refreshToken", data.refreshToken);
+
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
+          response.data.data;
+
+        // Обновляем токены в localStorage
+        localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
 
         // Обновляем заголовки
         apiClientFiles.defaults.headers.common[
@@ -66,9 +75,12 @@ apiClientFiles.interceptors.response.use(
         processQueue(null, newAccessToken);
         return apiClientFiles(originalRequest);
       } catch (err) {
+        console.error(err);
+
         processQueue(err, null);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
         document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
-        // alert("Token просрочен!");
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

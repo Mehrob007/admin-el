@@ -265,7 +265,8 @@ main {
   width: 370px;
 }
 .bottom__com > button,
-.bottom__com > div > button {
+.bottom__com > div > button,
+  .bottom__com > div > div > button {
   width: 145px;
   height: 45px;
   background-color: #408759;
@@ -383,7 +384,7 @@ main {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  /* gap: 20px; */
   position: relative;
 }
 .com__dop__input > label {
@@ -395,6 +396,7 @@ main {
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   color: #408759;
+  margin-bottom: 20px;
 }
 .com__dop__input__element {
   width: 100% !important;
@@ -710,6 +712,13 @@ main {
 .error {
   color: red;
   font-size: 12px;
+  font-family: Unbounded;
+  /* font-size: 14px; */
+  font-weight: 400;
+  line-height: 17.36px;
+  text-align: left;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
 .com__item__category {
   padding: 5px 10px;
@@ -868,29 +877,38 @@ main {
   background-color: #408759;
   color: white;
 }
-.menu__color__products{
+.menu__color__products {
   display: flex;
   align-items: center;
   justify-content: start;
   gap: 10px;
 }
-.menu__color__products > div{
+.menu__color__products > div {
   width: 500px;
   border-bottom: 2px solid #262626;
+
   height: 30px;
   display: flex;
+  overflow: auto;
   gap: 2px;
 }
-.menu__color__products > div > span{
-  border: 2px solid transparent;
-  border-radius: 5px ;
+.menu__color__products > div > span {
+  border: 2px solid #333;
+  /* border-radius: 5px; */
+  border-bottom: 5px solid transparent;
+  min-width: 50px;
+  cursor: pointer;
+  transition: all 0.1s linear;
 }
-.menu__color__products > button{
+/* .active__nav__product{
+
+} */
+.menu__color__products > button {
   height: 30px;
   width: 50px;
   cursor: pointer;
 }
-.modalAddColor{
+.modalAddColor {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -902,7 +920,7 @@ main {
   z-index: 999;
   background-color: rgba(0, 0, 0, 0.13);
 }
-.modalAddColor > main{
+.modalAddColor > main {
   display: flex;
   flex-direction: column;
   width: 200px;
@@ -912,7 +930,7 @@ main {
   padding-top: 10px;
   position: relative;
 }
-.modalAddColor > main > input{
+.modalAddColor > main > input {
   outline: none;
   height: 30px;
   padding-left: 5px;
@@ -927,11 +945,11 @@ main {
   border: none;
   border-bottom: 2px solid #262626;
 }
-.modalAddColor > main > div{
+.modalAddColor > main > div {
   display: flex;
   justify-content: space-between;
 }
-.modalAddColor > main > div > button{
+.modalAddColor > main > div > button {
   padding: 3px 7px;
   width: 95px;
   cursor: pointer;
@@ -943,11 +961,11 @@ main {
   text-decoration-skip-ink: none;
   color: #408759;
 }
-.modalAddColor > main > div > button:hover{
+.modalAddColor > main > div > button:hover {
   background-color: #408759;
   color: #fff;
 }
-.modalAddColor > main > button{
+.modalAddColor > main > button {
   position: absolute;
   right: 0;
   top: 0;
@@ -955,11 +973,11 @@ main {
   height: 25px;
   cursor: pointer;
 }
-.modalAddColor > main > button:hover{
+.modalAddColor > main > button:hover {
   background-color: #ff0000;
   color: white;
 }
-.modalAddColor > main > h1{
+.modalAddColor > main > h1 {
   cursor: pointer;
   font-family: Unbounded;
   font-weight: 400;
@@ -968,4 +986,12 @@ main {
   text-underline-position: from-font;
   text-decoration-skip-ink: none;
   color: #408759;
+}
+.button__bunner__delete__add{
+  display: flex;
+  align-items: end;
+  gap: 4px;
+}
+.button__delete__bunner{
+  background-color: #408759;
 }

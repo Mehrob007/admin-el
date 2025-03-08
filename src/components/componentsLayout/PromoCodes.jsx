@@ -4,7 +4,7 @@ import apiClient from "../../utils/apiClient";
 
 export default function PromoCodes() {
   const [data, setData] = useState([]);
-  const [newSkitka, setNewSkitka] = useState();
+  const [newSkitka, setNewSkitka] = useState("");
   const [localionPromoTop, setLocalionPromoTop] = useState("");
   const [promoCode, setPromoCode] = useState({
     name: "",
@@ -12,11 +12,31 @@ export default function PromoCodes() {
   });
 
   const onSendNewCollection = async () => {
-    console.log(newSkitka);
+
     try {
-      await apiClient.post("/promo", promoCode);
+      await apiClient.delete("/for-tops", {
+        data: {
+          id: localionPromoTop?.id,
+        },
+      });
+      await apiClient.post("/for-tops", {
+        name: newSkitka,
+        isHide: false,
+      });
+      // await apiClient.post("/for-tops", {
+      //   ...localionPromoTop,
+      //   isHide: false,
+      // });
       setNewSkitka("");
       getLocationPromoTop();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  const getLocationPromoTop = async () => {
+    try {
+      const res = await apiClient.get("/for-tops/admin");
+      setLocalionPromoTop(res?.data?.data[res?.data?.data?.length - 1]);
     } catch (e) {
       console.error(e);
     }
@@ -51,6 +71,7 @@ export default function PromoCodes() {
       await apiClient.delete("/promo", {
         data: {
           id: id,
+          forceDeleted: true,
         },
       });
       getPromoNames();
@@ -58,16 +79,7 @@ export default function PromoCodes() {
       console.error(e);
     }
   };
-  const getLocationPromoTop = async () => {
-    try {
-      const res = await apiClient.get("/Api/get-promo-all-for-top");
-      setLocalionPromoTop(res?.data[res?.data?.length - 1]?.promoName);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
-  console.log("localionPromoTop", localionPromoTop);
 
   useEffect(() => {
     getPromoNames();
@@ -82,7 +94,7 @@ export default function PromoCodes() {
           <p>Придумайте название акции</p>
         </div>
         <div className="top__com">
-          <p>Текущий: {localionPromoTop}</p>
+          <p>Текущий: {localionPromoTop?.name}</p>
         </div>
 
         <div className="bottom__com">

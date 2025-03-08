@@ -9,7 +9,6 @@ export default function Sizes() {
   });
 
   const onSendcollection = async () => {
-    console.log(Collection);
     try {
       const res = await apiClient.post("/sizes", Collection);
       console.log(res);

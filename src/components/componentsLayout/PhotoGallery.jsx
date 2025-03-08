@@ -3,7 +3,6 @@ import apiClient from "../../utils/apiClient";
 import Trash from "../../assets/icon/Trash.svg";
 import backProductsIcon from "../../assets/icon/backProductsIcon.svg";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import apiClientFiles from "../../utils/apiFileService";
 // import getImageSrс from "../../utils/urlImage"
 
@@ -24,12 +23,18 @@ export default function PhotoGallery() {
     images: [],
   });
   const navigate = useNavigate();
-  console.log("dataSend", dataSend);
+
   const addPhotoGallery = async () => {
+    // console.log(dataSend?.images?.length || !dataSend?.name?.length);
+
+    if (!dataSend?.images?.length || !dataSend?.name?.length) return;
     setLoadingt(true);
     if (!edit) {
       try {
-        await apiClient.post("galleries", dataSend);
+        await apiClient.post("galleries", {
+          ...dataSend,
+          images: dataSend?.images?.map((el) => ({ source: el?.source })),
+        });
         navigate(0);
         setLoadingt(false);
       } catch (e) {
@@ -49,44 +54,88 @@ export default function PhotoGallery() {
 
   const getCollections = async () => {
     try {
-      const res = await apiClient.get("/categories?page=0&limit=100");
-      setDataCollections(res.data.data.categories);
+      const res = await apiClient.get("collections/admins");
+      setDataCollections(res.data.data.collections);
     } catch (e) {
       console.error(e);
     }
   };
-  const handleFileChange = async (event) => {
-    const files = event.target.files[0];
-    if (!files) return;
 
-    // const base64Images = [];
-    // for (let i = 0; i < files.length; i++) {
-    //   const file = files[i];
-    //   if (file.size > 5 * 1024 * 1024) {
-    //     alert("Размер файла не может превышать 5мб.");
-    //     continue;
-    //   }
+  const addPhoto = async (file) => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
 
-    //   const base64 = await convertToBase64(file);
-    //   base64Images.push(base64);
+      const [res, imgBase64] = await Promise.all([
+        apiClientFiles.post("gallery/upload", formData),
+        convertToBase64(file),
+      ]);
+      await Promise.all([
+        apiClientFiles.post("gallery/submit", { source: res.data.source }),
+      ]);
+
+      return { source: res.data.source, sourceLoc: imgBase64 };
+    } catch (e) {
+      console.error("Ошибка при загрузке фото:", e);
+    }
+  };
+
+  // const handleFileChange = async (event, color) => {
+  //   const files = event.target.files;
+  //   if (!files.length) return;
+
+  //   let photos = [];
+
+  //   const uploadPromises = Array.from(files).map(async (file) => {
+  //     if (file.size > 5 * 1024 * 1024) {
+  //       alert("Размер файла не может превышать 5мб.");
+  //       return;
+  //     }
+  //     let itemPhoto = await addPhoto(file, color);
+  //     photos.push(itemPhoto);
+  //   });
+  //   await Promise.all(uploadPromises);
+  //   setDataSend((prevState) => ({
+  //     ...prevState,
+  //     images: [...prevState.images, ...photos],
+  //   }));
+  // };
+  const handleFileChange = async (event, color) => {
+    const files = Array.from(event.target.files);
+    if (!files.length) return;
+    // const prevState = allData.find((prev) => prev.color.hex === color);
+
+    // if (!prevState) {
+    //   console.error(`Цвет ${color} не найден в allData`);
+    //   return;
     // }
 
-    console.log("file", files);
+    let photos = [];
 
-    const formData = new FormData();
-    formData.append("file", files);
+    for (const file of files) {
+      if (file.size > 5 * 1024 * 1024) {
+        alert("Размер файла не может превышать 5мб.");
+        continue; // Пропускаем этот файл, но не прерываем цикл
+      }
 
-    const res = await axios.post(apiClientFiles("gallery/upload"), formData);
-    let imgBace64 = await convertToBase64(files);
+      let itemPhoto = await addPhoto(file, color);
+      photos.push(itemPhoto);
 
+      // if (edit) {
+      //   await apiClient.put(import.meta.env.VITE_ENV_URL + "images", {
+      //     productId: prevState?.selectedColor?.productId,
+      //     imageSource: itemPhoto?.source,
+      //   });
+      // }
+    }
     setDataSend((prevState) => ({
       ...prevState,
-      images: [
-        ...prevState.images,
-        { source: res.data.source, sourceLoc: imgBace64 },
-      ],
+      images: [...prevState.images, ...photos],
     }));
+
+    // onChange("images", [...prevState.images, ...photos], color);
   };
+
   const convertToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -117,7 +166,7 @@ export default function PhotoGallery() {
   const getGallery = async () => {
     try {
       const res = await apiClient.get(
-        `/galleries/admin?limit=${24}&page${page}`,
+        `/galleries/admin?limit=${24}&page=${page}`,
       );
       const newData = res?.data?.data?.map((el) => ({
         ...el,
@@ -131,7 +180,6 @@ export default function PhotoGallery() {
       console.error(e);
     }
   };
-  console.log("images", image);
 
   useEffect(() => {
     getCollections();
@@ -158,9 +206,6 @@ export default function PhotoGallery() {
     }
   }, [fetching]);
 
-  console.log("====================================");
-  console.log("dataSend", dataSend);
-  console.log("====================================");
   return (
     <div>
       <div className="com__box">
@@ -227,7 +272,7 @@ export default function PhotoGallery() {
                     </div>
                   </div>
                 ))
-              : "Загрузка..."}
+              : ""}
           </div>
         </div>
       ) : (
@@ -252,6 +297,9 @@ export default function PhotoGallery() {
                 ))}
               </select>
             </div>
+            {!dataSend?.name?.length && (
+              <p className="error">Коллекция обязателен.</p>
+            )}
             <div style={{ marginTop: "20px" }} className="top__com">
               <h1>Фотографии</h1>
               <p>Размер фото не может быть более 5мб.</p>
@@ -271,8 +319,10 @@ export default function PhotoGallery() {
               multiple
               onChange={handleFileChange}
             />{" "}
-            {!dataSend?.images && (
-              <p className="error">Поле обязательно для заполнения.</p>
+            {!dataSend?.images?.length && (
+              <p className="error">
+                Необходимо загрузить хотя бы одну фотографию.
+              </p>
             )}
             <div
               className="arr__img__rodect"

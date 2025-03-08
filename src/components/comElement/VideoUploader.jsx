@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import apiClient from "../../utils/apiClient";
 import { useNavigate } from "react-router-dom";
+import Trash from "../../assets/icon/Trash.svg";
+import apiClientFiles from "../../utils/apiFileService";
 
 const VideoUploader = ({
   postUrl,
   handleFileChange,
   getUrl,
   GetBunner,
-  // urlDeleteCom,
+  urlDeleteCom,
 }) => {
   const fileInputRef = useRef(null); // Ссылка на <input type="file">
   const [videoSrc, setVideoSrc] = useState(null); // Хранит URL выбранного видео
@@ -15,6 +16,8 @@ const VideoUploader = ({
   // const [bannerId, setBannerId] = useState("");
   const [loading, setLoading] = useState(true);
   const [renderVideo, setRenderVideo] = useState(false);
+  const [valid, setValid] = useState(true);
+  const [validVideo, setValidVideo] = useState(true);
   // const [urlDelete, setUrlDelete] = useState(urlDeleteCom);
   // const navigate = useNavigate();
 
@@ -24,19 +27,18 @@ const VideoUploader = ({
     }
   };
 
-  // const deleteBunner = async () => {
-  //   try {
-  //     setLoading(true)
-  //     const res = await apiClient.delete(`${urlDelete}?id=${bannerId}`);
-  //     console.log(res);
-  //     // GetBunner(setVideoSrc, getUrl, setLoading, setBannerId);
-  //     navigate(0)
-  //     setLoading(false)
-  //   } catch (e) {
-  //     console.error(e);
-  //     setLoading(false)
-  //   }
-  // };
+  const deleteBunner = async () => {
+    try {
+      setLoading(true);
+      await apiClientFiles.delete(`${urlDeleteCom}`);
+      GetBunner(setVideoSrc, getUrl, setLoading);
+      // navigate(0)
+      setLoading(false);
+    } catch (e) {
+      console.error(e);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (GetBunner && !setVideoSrc.length) {
@@ -58,16 +60,13 @@ const VideoUploader = ({
     }
   }, [videoSrc]);
 
-  // console.log("videoSrc", videoSrc);
-  // console.log("renderVideo", renderVideo);
-
   return (
     <div>
       <input
         type="file"
         ref={fileInputRef}
         style={{ display: "none" }}
-        accept="video/*"
+        // accept="video/*"
         onChange={(event) =>
           handleFileChange(
             event.target.files[0],
@@ -82,19 +81,32 @@ const VideoUploader = ({
         }
       />
       {renderVideo && (
-        <div style={{ marginTop: "20px" }}>
-          <video
-            controls
-            style={{ maxWidth: "300px", border: "1px solid #ddd" }}
-          >
-            <source src={videoSrc} type="video/mp4" />
-            Ваш браузер не поддерживает воспроизведение видео.
-          </video>
-        </div>
+        <>
+          <div style={{ marginTop: "20px" }}>
+            {validVideo && (
+              <video
+                onError={() => setValidVideo(false)}
+                controls
+                style={{ maxWidth: "300px", border: "1px solid #ddd" }}
+              >
+                <source src={videoSrc} type="video/mp4" />
+                Ваш браузер не поддерживает воспроизведение видео.
+              </video>
+            )}
+            {valid && (
+              <img
+                onError={() => setValid(false)}
+                style={{ maxWidth: "300px", border: "1px solid #ddd" }}
+                src={videoSrc}
+                alt="img"
+              />
+            )}
+          </div>
+        </>
       )}
-      {
+      <div className="button__bunner__delete__add">
         <button
-          style={{ background: loading && "#d9d9d9", width: "200px" }}
+          style={{ background: loading && "#d9d9d9", width: 252 }}
           onClick={(e) => {
             if (!loading) {
               handleButtonClick(e);
@@ -103,7 +115,18 @@ const VideoUploader = ({
         >
           Загрузить видео
         </button>
-      }
+        <button
+          style={{ width: 45, height: 45, background: loading && "#d9d9d9" }}
+          className="button__delete__bunner"
+          onClick={() => {
+            if (!loading) {
+              deleteBunner();
+            }
+          }}
+        >
+          <img src={Trash} alt="Trash" />
+        </button>
+      </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );

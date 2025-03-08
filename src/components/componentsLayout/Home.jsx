@@ -15,7 +15,7 @@ export default function Home() {
       const response = await axios.get(getUrl, { responseType: "blob" });
       const videoUrl = URL.createObjectURL(response.data);
       setVideoSrc(videoUrl);
-      console.log("videoUrl", response.data);
+     
     } catch (error) {
       setVideoSrc(null);
       console.error("Error fetching video:", error);
@@ -97,7 +97,7 @@ export default function Home() {
   //     reader.onerror = (error) => reject(error);
   //   });
   // };
-  console.log("localNewCollection", localNewCollection);
+
 
   return (
     <div className="box__home">
@@ -118,16 +118,18 @@ export default function Home() {
           />
           <button
             onClick={() => {
-              onSendNewCollection({
-                url: "collections",
-                data: { name: newCollection },
-                payload: (data) => {
-                  // setNewCollection("");
-                  patchCollections(data.id);
-                },
-              });
-              setTimeout(getNewCollection(), 1000);
-              setTimeout(setNewCollection(""), 100);
+              if (newCollection.length) {
+                onSendNewCollection({
+                  url: "collections",
+                  data: { name: newCollection },
+                  payload: (data) => {
+                    // setNewCollection("");
+                    patchCollections(data.id);
+                  },
+                });
+                setTimeout(getNewCollection(), 1000);
+                setTimeout(setNewCollection(""), 100);
+              }
             }}
           >
             Сохранить
@@ -146,7 +148,7 @@ export default function Home() {
             getUrl={import.meta.env.VITE_ENV_URL_FILE + `banner/window`}
             postUrl={import.meta.env.VITE_ENV_URL_FILE + "banner/window"}
             handleFileChange={handleFileChange}
-            // urlDeleteCom={`/Banner/delete-banner`}
+            urlDeleteCom={`banner/window/remove`}
           />
         </div>
       </div>
@@ -161,7 +163,7 @@ export default function Home() {
             getUrl={import.meta.env.VITE_ENV_URL_FILE + `banner/mobile`}
             postUrl={import.meta.env.VITE_ENV_URL_FILE + "banner/mobile"}
             handleFileChange={handleFileChange}
-            // urlDeleteCom={`/Banner/delete-banner-mobile`}
+            urlDeleteCom={`banner/mobile/remove`}
           />
         </div>
       </div>

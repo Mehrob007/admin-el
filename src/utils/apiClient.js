@@ -1,6 +1,5 @@
 import axios from "axios";
 
-
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_ENV_URL,
 });
@@ -68,8 +67,9 @@ apiClient.interceptors.response.use(
         return apiClient(originalRequest);
       } catch (err) {
         processQueue(err, null);
+        console.error(err);
         document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
-        // alert("Token просрочен!");
+        alert("Token просрочен!");
         return Promise.reject(err);
       } finally {
         isRefreshing = false;

@@ -9,12 +9,12 @@ export default function ClothingTypes() {
   const [data, setData] = useState([]);
 
   const onSendTypeClothing = async () => {
-    console.log(TypeClothing);
+    
     try {
-      const res = await apiClient.post("/categories", {
+     await apiClient.post("/categories", {
         name: TypeClothing.name,
       });
-      console.log(res);
+      
       getСategory();
       setTypeClothing({});
     } catch (e) {
@@ -24,7 +24,7 @@ export default function ClothingTypes() {
 
   const getСategory = async () => {
     try {
-      const res = await apiClient.get("/categories");
+      const res = await apiClient.get("/categories/admins");
       setData(res.data.data.categories);
     } catch (e) {
       console.error(e);
@@ -37,7 +37,7 @@ export default function ClothingTypes() {
       const res = await apiClient.delete(`/categories`, {
         data: {
           id: id,
-          forceDeleted: true,
+          forceDelete: true,
         },
       });
       console.log(res);
@@ -50,11 +50,9 @@ export default function ClothingTypes() {
   const onPatch = async (el) => {
     try {
       const res = await apiClient.patch("/categories", {
-        data: {
-          id: el.id,
-          name: el.name,
-          isHide: !el.isHide,
-        },
+        id: el.id,
+        name: el.name,
+        isHide: !el.isHide,
       });
       console.log(res);
       getСategory();
@@ -65,8 +63,6 @@ export default function ClothingTypes() {
   useEffect(() => {
     getСategory();
   }, []);
-
-  console.log(data);
 
   return (
     <div>
@@ -103,7 +99,7 @@ export default function ClothingTypes() {
               <span>{el.name}</span>
               <div>
                 <button onClick={() => onPatch(el)}>
-                  {el.isHide ? <IoMdEye /> : <IoMdEyeOff />}
+                  {!el.isHide ? <IoMdEye /> : <IoMdEyeOff />}
                 </button>
                 <button onClick={() => onDelete(el.id)}>X</button>
               </div>

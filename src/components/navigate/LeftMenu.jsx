@@ -34,7 +34,7 @@ export default function LeftMenu() {
         <button
           onClick={() => {
             localStorage.removeItem("refreshToken");
-            document.location.href = "http://localhost:5174";
+            document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
           }}
         >
           Выход
