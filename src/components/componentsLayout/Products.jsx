@@ -158,7 +158,7 @@ export default function Products() {
       //     count || pageCount
       //   }`,
       // );
-      const res = await apiClient.get(`/products?page=${count || pageCount}`);
+      const res = await apiClient.get(`/products?page=${count || pageCount}&categoryFilter=1`);
       const products = res.data.data.products;
       // setLangthProduct(res.data.totalItems || 0);
       // setPageProduct(res.data.totalPages || 0);
@@ -466,7 +466,7 @@ export default function Products() {
   //     addProduct();
   //   }
   // }, [formState]);
-  console.log("alldata", allData);
+  // console.log("alldata", allData);
 
   useEffect(() => {
     if (fetching) {

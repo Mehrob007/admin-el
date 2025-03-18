@@ -261,7 +261,7 @@ main {
   gap: 10px;
   margin-top: 50px;
 }
-.bottom__com > input {
+.bottom__com > input, .bottom__com > select {
   width: 370px;
 }
 .bottom__com > button,

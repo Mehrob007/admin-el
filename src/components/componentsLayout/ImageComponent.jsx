@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 function ImageComponent({ el, i, loadingPhoto }) {
   const [src, setSrc] = useState(
