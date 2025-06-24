@@ -6,7 +6,6 @@ function ImageComponent({ el, i, loadingPhoto }) {
       ? import.meta.env.VITE_ENV_URL_FILE + `gallery?gallery=${el?.source}`
       : loadingPhoto,
   );
-
   const handleError = () => {
     setSrc(loadingPhoto);
   };

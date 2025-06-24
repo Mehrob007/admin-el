@@ -63,8 +63,8 @@ apiClientFiles.interceptors.response.use(
           response.data.data;
 
         // Обновляем токены в localStorage
-        localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreshToken", newRefreshToken);
+        await localStorage.setItem("accessToken", newAccessToken);
+        await localStorage.setItem("refreshToken", newRefreshToken);
 
         // Обновляем заголовки
         apiClientFiles.defaults.headers.common[

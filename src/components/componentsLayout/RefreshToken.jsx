@@ -5,7 +5,7 @@ import apiClient from "../../utils/apiClient";
 export default function RefreshToken() {
   const { token } = useParams();
   const refreshToken = localStorage.getItem("refreshToken");
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   let decodedToken;
   try {
@@ -30,9 +30,9 @@ export default function RefreshToken() {
       });
       console.log("Новый access-токен:", res.data);
       const data = res.data.data;
-      await localStorage.setItem("accessToken", data.accessToken);
-      await localStorage.setItem("refreshToken", data.refreshToken);
-      navigate("/")
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("refreshToken", data.refreshToken);
+      navigate("/");
     } catch (e) {
       // document.location.href = "http://localhost:5174"
       console.error("Ошибка при обновлении токена:", e);
@@ -40,7 +40,7 @@ export default function RefreshToken() {
   };
 
   useEffect(() => {
-    const refreshToken = localStorage.getItem("refreshToken");
+    // const refreshToken = localStorage.getItem("refreshToken");
     if (refreshToken) {
       getAccessToken(refreshToken);
     }

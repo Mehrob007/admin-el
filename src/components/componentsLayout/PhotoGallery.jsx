@@ -257,7 +257,7 @@ export default function PhotoGallery() {
                         //   alt="image-gallery"
                         // />
                         <ImageComponent
-                          el={el}
+                          el={prev}
                           i={i}
                           loadingPhoto={loadingPhoto}
                           key={i}

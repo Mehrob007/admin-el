@@ -261,12 +261,13 @@ main {
   gap: 10px;
   margin-top: 50px;
 }
-.bottom__com > input, .bottom__com > select {
+.bottom__com > input,
+.bottom__com > select {
   width: 370px;
 }
 .bottom__com > button,
 .bottom__com > div > button,
-  .bottom__com > div > div > button {
+.bottom__com > div > div > button {
   width: 145px;
   height: 45px;
   background-color: #408759;
@@ -386,6 +387,27 @@ main {
   flex-direction: column;
   /* gap: 20px; */
   position: relative;
+}
+.com__dop__input > p {
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+.com__dop__input > div {
+  display: flex;
+  /* flex-direction: row-reverse; */
+  gap: 5px;
+}
+.com__dop__input > div > input {
+  width: 240px;
+}
+.com__dop__input > div > span {
+  width: 47px;
+  background-color: #408759;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  display: none;
 }
 .com__dop__input > label {
   font-family: Unbounded;
@@ -879,18 +901,19 @@ main {
 }
 .menu__color__products {
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: start;
-  gap: 10px;
+  gap: 20px;
 }
 .menu__color__products > div {
   width: 500px;
   border-bottom: 2px solid #262626;
 
-  height: 30px;
+  height: 45px;
   display: flex;
-  overflow: auto;
-  gap: 2px;
+  /* overflow: auto; */
+  align-items: end;
+  gap: 10px;
 }
 .menu__color__products > div > span {
   border: 2px solid #333;
@@ -899,12 +922,28 @@ main {
   min-width: 50px;
   cursor: pointer;
   transition: all 0.1s linear;
+  position: relative;
+  height: 30px;
+}
+.menu__color__products > div > span > span {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+  background-color: #408759;
+  border-radius: 50%;
+  /* padding: 1px; */
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
 }
 /* .active__nav__product{
 
 } */
 .menu__color__products > button {
-  height: 30px;
+  height: 45px;
   width: 50px;
   cursor: pointer;
 }
@@ -987,11 +1026,11 @@ main {
   text-decoration-skip-ink: none;
   color: #408759;
 }
-.button__bunner__delete__add{
+.button__bunner__delete__add {
   display: flex;
   align-items: end;
   gap: 4px;
 }
-.button__delete__bunner{
+.button__delete__bunner {
   background-color: #408759;
 }

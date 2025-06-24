@@ -27,10 +27,10 @@ const defItem = {
     id: "",
   },
   dimension: {
-    dx: 0,
-    dy: 0,
-    dz: 0,
-    weight: 0,
+    dx: null,
+    dy: null,
+    dz: null,
+    weight: null,
   },
   sizes: [],
   colorEdit: "",
@@ -158,7 +158,9 @@ export default function Products() {
       //     count || pageCount
       //   }`,
       // );
-      const res = await apiClient.get(`/products?page=${count || pageCount}&categoryFilter=1`);
+      const res = await apiClient.get(
+        `/products?page=${count || pageCount}&categoryFilter=1`,
+      );
       const products = res.data.data.products;
       // setLangthProduct(res.data.totalItems || 0);
       // setPageProduct(res.data.totalPages || 0);
@@ -414,6 +416,9 @@ export default function Products() {
       console.error(e);
       setDataСategory([]);
     }
+  };
+  const deleteColor = (color) => {
+    setAllData(allData.filter((e) => e.color.hex != color));
   };
 
   const handleSaveChanges = async () => {
@@ -709,7 +714,9 @@ export default function Products() {
                             e.color.hex === allDataVibor && "5px solid #408759",
                         }}
                         key={e.color.hex}
-                      ></span>
+                      >
+                        <span onClick={() => deleteColor(e.color.hex)}>x</span>
+                      </span>
                     ))}
                   </div>
                   <button onClick={() => setModalAddColor(true)}>+</button>
@@ -932,6 +939,7 @@ export default function Products() {
                       )}
                       <div className="com__dop__input">
                         <label>Размеры</label>
+
                         <div className="size__arr__com">
                           {sizeArr.map((a, i) => (
                             <div
@@ -1050,31 +1058,35 @@ export default function Products() {
                       <div className="select__form__product">
                         <div className="com__dop__input">
                           <label>Ширина</label>
-                          <input
-                            type="text"
-                            className="select__com"
-                            placeholder="Размер в сантиметров"
-                            value={formState.dimension.dx}
-                            onChange={(e) =>
-                              setAllData(
-                                allData.map((prev) => {
-                                  if (
-                                    prev?.color?.hex === formState?.color?.hex
-                                  ) {
-                                    return {
-                                      ...prev,
-                                      dimension: {
-                                        ...prev?.dimension,
-                                        dx: +e.target.value,
-                                      },
-                                    };
-                                  } else {
-                                    return prev;
-                                  }
-                                }),
-                              )
-                            }
-                          />
+                          <p>в сантиметрах</p>
+                          <div>
+                            <span>см</span>
+                            <input
+                              type="text"
+                              className="select__com"
+                              placeholder="Размер в сантиметров"
+                              value={formState.dimension.dx}
+                              onChange={(e) =>
+                                setAllData(
+                                  allData.map((prev) => {
+                                    if (
+                                      prev?.color?.hex === formState?.color?.hex
+                                    ) {
+                                      return {
+                                        ...prev,
+                                        dimension: {
+                                          ...prev?.dimension,
+                                          dx: +e.target.value,
+                                        },
+                                      };
+                                    } else {
+                                      return prev;
+                                    }
+                                  }),
+                                )
+                              }
+                            />
+                          </div>
                           {errors?.[i]?.dimensionXd && (
                             <p className="error">
                               Поле обязательно для заполнения.
@@ -1083,66 +1095,74 @@ export default function Products() {
                         </div>
                         <div className="com__dop__input">
                           <label>Высота</label>
-                          <input
-                            type="text"
-                            className="select__com"
-                            placeholder="Размер в сантиметров"
-                            value={formState.dimension.dy}
-                            onChange={(e) =>
-                              setAllData(
-                                allData.map((prev) => {
-                                  if (
-                                    prev?.color?.hex === formState?.color?.hex
-                                  ) {
-                                    return {
-                                      ...prev,
-                                      dimension: {
-                                        ...prev?.dimension,
-                                        dy: +e.target.value,
-                                      },
-                                    };
-                                  } else {
-                                    return prev;
-                                  }
-                                }),
-                              )
-                            }
-                          />
-                          {errors?.[i]?.dimensionYd && (
-                            <p className="error">
-                              Поле обязательно для заполнения.
-                            </p>
-                          )}
+                          <p>в сантиметрах</p>
+                          <div>
+                            <span>см</span>
+                            <input
+                              type="text"
+                              className="select__com"
+                              placeholder="Размер в сантиметров"
+                              value={formState.dimension.dy}
+                              onChange={(e) =>
+                                setAllData(
+                                  allData.map((prev) => {
+                                    if (
+                                      prev?.color?.hex === formState?.color?.hex
+                                    ) {
+                                      return {
+                                        ...prev,
+                                        dimension: {
+                                          ...prev?.dimension,
+                                          dy: +e.target.value,
+                                        },
+                                      };
+                                    } else {
+                                      return prev;
+                                    }
+                                  }),
+                                )
+                              }
+                            />
+                            {errors?.[i]?.dimensionYd && (
+                              <p className="error">
+                                Поле обязательно для заполнения.
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                       <div className="select__form__product">
                         <div className="com__dop__input">
                           <label>Длина</label>
-                          <input
-                            type="text"
-                            className="select__com"
-                            placeholder="Размер в сантиметров"
-                            value={formState.dimension.dz}
-                            onChange={(e) =>
-                              setAllData(
-                                allData.map((prev) => {
-                                  if (
-                                    prev?.color?.hex === formState?.color?.hex
-                                  ) {
-                                    return {
-                                      ...prev,
-                                      dimension: {
-                                        ...prev?.dimension,
-                                        dz: +e.target.value,
-                                      },
-                                    };
-                                  } else {
-                                    return prev;
-                                  }
-                                }),
-                              )
-                            }
-                          />
+                          <p>в сантиметрах</p>
+                          <div>
+                            <span>см</span>
+                            <input
+                              type="text"
+                              className="select__com"
+                              placeholder="Размер в сантиметров"
+                              value={formState.dimension.dz}
+                              onChange={(e) =>
+                                setAllData(
+                                  allData.map((prev) => {
+                                    if (
+                                      prev?.color?.hex === formState?.color?.hex
+                                    ) {
+                                      return {
+                                        ...prev,
+                                        dimension: {
+                                          ...prev?.dimension,
+                                          dz: +e.target.value,
+                                        },
+                                      };
+                                    } else {
+                                      return prev;
+                                    }
+                                  }),
+                                )
+                              }
+                            />
+                          </div>
                           {errors?.[i]?.dimensionZd && (
                             <p className="error">
                               Поле обязательно для заполнения.
@@ -1151,31 +1171,35 @@ export default function Products() {
                         </div>
                         <div className="com__dop__input">
                           <label>Вес</label>
-                          <input
-                            type="text"
-                            className="select__com"
-                            placeholder="Вес в граммах"
-                            value={formState.dimension.weight}
-                            onChange={(e) =>
-                              setAllData(
-                                allData.map((prev) => {
-                                  if (
-                                    prev?.color?.hex === formState?.color?.hex
-                                  ) {
-                                    return {
-                                      ...prev,
-                                      dimension: {
-                                        ...prev?.dimension,
-                                        weight: +e.target.value,
-                                      },
-                                    };
-                                  } else {
-                                    return prev;
-                                  }
-                                }),
-                              )
-                            }
-                          />
+                          <p>в граммах</p>
+                          <div>
+                            <span>г</span>
+                            <input
+                              type="text"
+                              className="select__com"
+                              placeholder="Вес в граммах"
+                              value={formState.dimension.weight}
+                              onChange={(e) =>
+                                setAllData(
+                                  allData.map((prev) => {
+                                    if (
+                                      prev?.color?.hex === formState?.color?.hex
+                                    ) {
+                                      return {
+                                        ...prev,
+                                        dimension: {
+                                          ...prev?.dimension,
+                                          weight: +e.target.value,
+                                        },
+                                      };
+                                    } else {
+                                      return prev;
+                                    }
+                                  }),
+                                )
+                              }
+                            />
+                          </div>
                           {errors?.[i]?.dimensionWeight && (
                             <p className="error">
                               Поле обязательно для заполнения.
@@ -1263,18 +1287,24 @@ export default function Products() {
               <button
                 onClick={() => {
                   if (nameColor.length === 7) {
-                    setAllData([
-                      ...allData,
-                      {
-                        ...defItem,
-                        color: {
-                          hex: nameColor,
+                    if (
+                      !allData?.some((prev) => prev?.color?.hex == nameColor)
+                    ) {
+                      setAllData([
+                        ...allData,
+                        {
+                          ...defItem,
+                          color: {
+                            hex: nameColor,
+                          },
                         },
-                      },
-                    ]);
-                    setAllDataVibor(nameColor);
-                    setNameColor("");
-                    setModalAddColor(false);
+                      ]);
+                      setAllDataVibor(nameColor);
+                      setNameColor("");
+                      setModalAddColor(false);
+                    } else {
+                      alert("Этот цвет уже добавлен!");
+                    }
                   }
                 }}
               >

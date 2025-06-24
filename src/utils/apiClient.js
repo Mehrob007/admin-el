@@ -54,8 +54,8 @@ apiClient.interceptors.response.use(
         );
         const data = response.data.data;
         const newAccessToken = data.accessToken;
-        await localStorage.setItem("accessToken", data.accessToken);
-        await localStorage.setItem("refreshToken", data.refreshToken);
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
 
         // Обновляем заголовки
         apiClient.defaults.headers.common[
@@ -68,8 +68,9 @@ apiClient.interceptors.response.use(
       } catch (err) {
         processQueue(err, null);
         console.error(err);
-        document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
-        alert("Token просрочен!");
+        if (!confirm("Token просрочен!")) {
+          document.location.href = import.meta.env.VITE_ENV_URL_REDIRECT;
+        }
         return Promise.reject(err);
       } finally {
         isRefreshing = false;
